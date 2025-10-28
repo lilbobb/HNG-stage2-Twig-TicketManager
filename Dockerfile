@@ -1,5 +1,11 @@
 FROM php:8.2-cli
 
+RUN apt-get update && apt-get install -y \
+    unzip \
+    git \
+    zip \
+ && rm -rf /var/lib/apt/lists/*
+
 COPY composer.phar /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 
