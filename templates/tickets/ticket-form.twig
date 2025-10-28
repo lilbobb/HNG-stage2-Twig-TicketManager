@@ -1,0 +1,69 @@
+<div id="ticketForm" class="hidden mb-8">
+    <div class="bg-gray-800 rounded-xl shadow-sm border border-gray-700 p-6">
+        <h3 id="formTitle" class="text-xl font-semibold text-white mb-6">Create New Ticket</h3>
+        <form id="ticketFormElement" class="space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1.5">
+                    Title <span class="text-red-400">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    name="title" 
+                    class="w-full px-3 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-gray-400"
+                    placeholder="Enter ticket title"
+                    required
+                />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1.5">Description</label>
+                <textarea 
+                    name="description" 
+                    class="w-full px-3 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition min-h-[120px] resize-y placeholder-gray-400"
+                    placeholder="Enter ticket description (optional)"
+                ></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1.5">
+                        Status <span class="text-red-400">*</span>
+                    </label>
+                    <select 
+                        name="status" 
+                        class="w-full px-3 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        required
+                    >
+                        <option value="open">Open</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1.5">Priority</label>
+                    <select 
+                        name="priority" 
+                        class="w-full px-3 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    >
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-4">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Save Ticket
+                </button>
+                <button type="button" onclick="toggleTicketForm()" class="bg-gray-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

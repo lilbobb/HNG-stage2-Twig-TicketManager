@@ -1,0 +1,13 @@
+# Dependency directories
+node_modules/
+vendor/
+
+# Logs and cache
+*.log
+.cache/
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

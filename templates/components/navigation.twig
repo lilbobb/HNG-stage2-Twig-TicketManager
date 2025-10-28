@@ -1,0 +1,162 @@
+<nav class="sticky top-0 z-50 w-full bg-gray-900 border-b border-gray-700 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <a href="/" class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-white hidden sm:block">{{ app_name ?? 'FLix' }}</h1>
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center gap-4">
+                {% if user %}
+                    <a href="/dashboard" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                        Dashboard
+                    </a>
+                    <a href="/tickets" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                        Tickets
+                    </a>
+                    <div class="flex items-center gap-3 ml-4 pl-4 border-l border-gray-700">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                            <span class="text-sm font-medium text-blue-400">
+                                {{ user.email|first|upper }}
+                            </span>
+                        </div>
+                        <span class="text-sm text-gray-300">{{ user.email }}</span>
+                        <a href="/logout" class="px-3 py-1.5 text-sm font-medium text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition border border-red-700">
+                            Logout
+                        </a>
+                    </div>
+                {% else %}
+                    <a href="/login" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition">
+                        Login
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="md:hidden flex items-center">
+                {% if user %}
+                    <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
+                        <span class="text-sm font-medium text-blue-400">
+                            {{ user.email|first|upper }}
+                        </span>
+                    </div>
+                {% endif %}
+                <button 
+                    type="button" 
+                    id="mobileMenuButton"
+                    class="text-gray-400 hover:text-gray-300 focus:outline-none focus:text-gray-300 transition"
+                    aria-label="Toggle menu"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden border-t border-gray-700 py-4 bg-gray-900">
+            {% if user %}
+                <div class="space-y-2">
+                    <a href="/dashboard" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                        Dashboard
+                    </a>
+                    <a href="/tickets" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                        Tickets
+                    </a>
+                    <div class="pt-2 mt-2 border-t border-gray-700">
+                        <div class="flex items-center px-3 py-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
+                                <span class="text-sm font-medium text-blue-400">
+                                    {{ user.email|first|upper }}
+                                </span>
+                            </div>
+                            <span class="text-sm text-gray-300 flex-1">{{ user.email }}</span>
+                        </div>
+                        <a href="/logout" class="block px-3 py-2 mt-2 text-base font-medium text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition">
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="space-y-2">
+                    <a href="/login" class="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg text-base font-medium hover:bg-blue-600 transition">
+                        Login
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (mobileMenuButton && mobileMenu) {
+        let isMenuOpen = false;
+
+        function toggleMobileMenu() {
+            isMenuOpen = !isMenuOpen;
+            
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenuButton.innerHTML = `
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                `;
+            } else {
+                mobileMenu.classList.add('hidden');
+
+                mobileMenuButton.innerHTML = `
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                `;
+            }
+        }
+
+        function closeMobileMenu() {
+            if (isMenuOpen) {
+                isMenuOpen = false;
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.innerHTML = `
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                `;
+            }
+        }
+
+        mobileMenuButton.addEventListener('click', function(e) {
+            e.stopPropagation(); 
+            toggleMobileMenu();
+        });
+
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('click', function(event) {
+            if (isMenuOpen && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+    }
+});
+</script>
