@@ -2,5 +2,30 @@
     "require": {
         "twig/twig": "^3.21",
         "symfony/http-foundation": "^7.3"
-    }
+    },
+  "name": "FLix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -o ./public/css/output.css --minify",
+    "watch:css": "tailwindcss -o ./public/css/output.css --watch",
+    "serve": "php -S localhost:8000 -t public",
+    "build": "npm run build:css",
+    "dev": "npm run build:css && npm run serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "browser-sync": "^3.0.4",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.16"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.16"
+  }
 }
