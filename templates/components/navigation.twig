@@ -9,44 +9,20 @@
                             <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" clip-rule="evenodd"/>
                         </svg>
                     </div>
-                    <h1 class="text-xl font-semibold text-white hidden sm:block">{{ app_name ?? 'FLix' }}</h1>
+                    <h1 class="text-xl font-semibold text-white hidden sm:block">{{ app_name ?? 'TicketFlow' }}</h1>
                 </a>
             </div>
 
-            <div class="hidden md:flex items-center gap-4">
-                {% if user %}
-                    <a href="/dashboard" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
-                        Dashboard
-                    </a>
-                    <a href="/tickets" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
-                        Tickets
-                    </a>
-                    <div class="flex items-center gap-3 ml-4 pl-4 border-l border-gray-700">
-                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-                            <span class="text-sm font-medium text-blue-400">
-                                {{ user.email|first|upper }}
-                            </span>
-                        </div>
-                        <span class="text-sm text-gray-300">{{ user.email }}</span>
-                        <a href="/logout" class="px-3 py-1.5 text-sm font-medium text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition border border-red-700">
-                            Logout
-                        </a>
-                    </div>
-                {% else %}
-                    <a href="/login" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition">
-                        Login
-                    </a>
-                {% endif %}
+            <div id="desktopNav" class="hidden md:flex items-center gap-4">
+                <a href="/login" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition">
+                    Login
+                </a>
             </div>
 
             <div class="md:hidden flex items-center">
-                {% if user %}
-                    <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
-                        <span class="text-sm font-medium text-blue-400">
-                            {{ user.email|first|upper }}
-                        </span>
-                    </div>
-                {% endif %}
+                <div id="mobileUserAvatar" class="hidden w-8 h-8 rounded-full bg-blue-500/20 items-center justify-center mr-3">
+                    <span class="text-sm font-medium text-blue-400">U</span>
+                </div>
                 <button 
                     type="button" 
                     id="mobileMenuButton"
@@ -61,41 +37,116 @@
         </div>
 
         <div id="mobileMenu" class="hidden md:hidden border-t border-gray-700 py-4 bg-gray-900">
-            {% if user %}
-                <div class="space-y-2">
-                    <a href="/dashboard" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
-                        Dashboard
-                    </a>
-                    <a href="/tickets" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
-                        Tickets
-                    </a>
-                    <div class="pt-2 mt-2 border-t border-gray-700">
-                        <div class="flex items-center px-3 py-2">
-                            <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
-                                <span class="text-sm font-medium text-blue-400">
-                                    {{ user.email|first|upper }}
-                                </span>
-                            </div>
-                            <span class="text-sm text-gray-300 flex-1">{{ user.email }}</span>
-                        </div>
-                        <a href="/logout" class="block px-3 py-2 mt-2 text-base font-medium text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition">
-                            Logout
-                        </a>
-                    </div>
-                </div>
-            {% else %}
-                <div class="space-y-2">
-                    <a href="/login" class="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg text-base font-medium hover:bg-blue-600 transition">
-                        Login
-                    </a>
-                </div>
-            {% endif %}
+            <div class="space-y-2">
+                <a href="/login" class="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg text-base font-medium hover:bg-blue-600 transition">
+                    Login
+                </a>
+            </div>
         </div>
     </div>
 </nav>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    updateNavigationFromAuth();
+    setupMobileMenu();
+});
+
+function updateNavigationFromAuth() {
+    const desktopNav = document.getElementById('desktopNav');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+    
+    if (!desktopNav || !mobileMenu) return;
+    
+    const session = JSON.parse(localStorage.getItem('ticketapp_session') || 'null');
+    
+    if (session && Date.now() < session.expiresAt) {
+        const email = session.email || 'User';
+        const initial = email.charAt(0).toUpperCase();
+        
+        desktopNav.innerHTML = `
+            <a href="/dashboard" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                Dashboard
+            </a>
+            <a href="/tickets" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                Tickets
+            </a>
+            <div class="flex items-center gap-3 ml-4 pl-4 border-l border-gray-700">
+                <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                    <span class="text-sm font-medium text-blue-400">${initial}</span>
+                </div>
+                <span class="text-sm text-gray-300">${email}</span>
+                <button onclick="handleLogout()" class="px-3 py-1.5 text-sm font-medium text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition border border-red-700">
+                    Logout
+                </button>
+            </div>
+        `;
+        
+        mobileMenu.innerHTML = `
+            <div class="space-y-2">
+                <a href="/dashboard" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                    Dashboard
+                </a>
+                <a href="/tickets" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                    Tickets
+                </a>
+                <div class="pt-2 mt-2 border-t border-gray-700">
+                    <div class="flex items-center px-3 py-2">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center mr-3">
+                            <span class="text-sm font-medium text-blue-400">${initial}</span>
+                        </div>
+                        <span class="text-sm text-gray-300 flex-1">${email}</span>
+                    </div>
+                    <button onclick="handleLogout()" class="block w-full text-left px-3 py-2 mt-2 text-base font-medium text-red-400 hover:text-white hover:bg-red-500 rounded-lg transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        if (mobileUserAvatar) {
+            mobileUserAvatar.classList.remove('hidden');
+            mobileUserAvatar.classList.add('flex');
+            mobileUserAvatar.querySelector('span').textContent = initial;
+        }
+    } else {
+        desktopNav.innerHTML = `
+            <a href="/login" class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition">
+                Login
+            </a>
+        `;
+        
+        mobileMenu.innerHTML = `
+            <div class="space-y-2">
+                <a href="/login" class="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg text-base font-medium hover:bg-blue-600 transition">
+                    Login
+                </a>
+            </div>
+        `;
+        
+        if (mobileUserAvatar) {
+            mobileUserAvatar.classList.add('hidden');
+            mobileUserAvatar.classList.remove('flex');
+        }
+    }
+}
+
+function handleLogout() {
+    if (window.logout) {
+        window.logout();
+    } else {
+        localStorage.removeItem('ticketapp_session');
+        if (window.showToast) {
+            window.showToast('Logged out successfully', 'success');
+        }
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 1000);
+    }
+}
+
+function setupMobileMenu() {
     const mobileMenuButton = document.getElementById('mobileMenuButton');
     const mobileMenu = document.getElementById('mobileMenu');
 
@@ -114,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             } else {
                 mobileMenu.classList.add('hidden');
-
                 mobileMenuButton.innerHTML = `
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -141,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         mobileMenu.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A') {
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
                 closeMobileMenu();
             }
         });
@@ -158,5 +208,5 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
+}
 </script>

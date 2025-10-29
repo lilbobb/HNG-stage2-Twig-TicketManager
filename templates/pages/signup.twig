@@ -19,14 +19,6 @@
                 <p class="text-gray-400">Start managing tickets today</p>
             </div>
 
-            {% if _GET.error %}
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        showToast('{{ _GET.error }}', 'error');
-                    });
-                </script>
-            {% endif %}
-
             <form id="signupForm" class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-1.5">
@@ -91,23 +83,66 @@
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const signupForm = document.getElementById('signupForm');
-    
-    if (signupForm) {
-        signupForm.addEventListener('submit', handleSignup);
-    }
-});
+<!-- Add toast component directly in the template -->
+<div id="toast" class="hidden fixed top-4 right-4 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 max-w-sm z-50">
+    <div class="flex items-center space-x-3">
+        <div id="toast-icon"></div>
+        <p id="toast-message" class="text-white text-sm"></p>
+    </div>
+</div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Mock user database
+const MOCK_USERS = [
+    { id: 1, email: 'test@example.com', password: 'password123' },
+    { id: 2, email: 'demo@example.com', password: 'demo123' },
+    { id: 3, email: 'admin@ticketflow.com', password: 'admin123' }
+];
+
+// Simple toast function
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    const toastIcon = document.getElementById('toast-icon');
+    
+    const icons = {
+        success: '<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>',
+        error: '<svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>'
+    };
+    
+    if (toast && toastMessage && toastIcon) {
+        toastMessage.textContent = message;
+        toastIcon.innerHTML = icons[type] || icons.success;
+        toast.classList.remove('hidden');
+        
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 4000);
+    } else {
+        console.log(`${type}: ${message}`);
+        // Fallback alert
+        alert(`${type.toUpperCase()}: ${message}`);
+    }
+}
+
+// Email validation
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Handle signup
 function handleSignup(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
+    const email = document.getElementById('email')?.value.trim();
+    const password = document.getElementById('password')?.value;
+    const confirmPassword = document.getElementById('confirmPassword')?.value;
 
-    // Client-side validation
+    // Validate
     if (!email || !password || !confirmPassword) {
         showToast('Please fill in all fields', 'error');
         return;
@@ -128,47 +163,50 @@ function handleSignup(e) {
         return;
     }
 
-    // Show loading state
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Creating account...';
-    submitBtn.disabled = true;
+    // Check if user already exists
+    const registeredUsers = JSON.parse(localStorage.getItem('ticketapp_users') || '[]');
+    const mockUserExists = MOCK_USERS.some(u => u.email === email);
+    const registeredUserExists = registeredUsers.some(u => u.email === email);
+    
+    if (mockUserExists || registeredUserExists) {
+        showToast('Email already registered', 'error');
+        return;
+    }
 
-    // Simulate API call and show success toast
+    // Create new user
+    const newUser = {
+        id: `user_${Date.now()}`,
+        email: email,
+        password: password,
+        createdAt: new Date().toISOString()
+    };
+
+    // Store user
+    registeredUsers.push(newUser);
+    localStorage.setItem('ticketapp_users', JSON.stringify(registeredUsers));
+
+    // Create session
+    const session = {
+        userId: newUser.id,
+        email: newUser.email,
+        expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+    };
+
+    localStorage.setItem('ticketapp_session', JSON.stringify(session));
+    showToast('Account created successfully!', 'success');
+    
+    // Redirect to dashboard
     setTimeout(() => {
-        showToast('Account created successfully!', 'success');
-        
-        // Submit the form to PHP after showing toast
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/auth/signup';
-        
-        const emailInput = document.createElement('input');
-        emailInput.type = 'hidden';
-        emailInput.name = 'email';
-        emailInput.value = email;
-        
-        const passwordInput = document.createElement('input');
-        passwordInput.type = 'hidden';
-        passwordInput.name = 'password';
-        passwordInput.value = password;
-
-        const confirmPasswordInput = document.createElement('input');
-        confirmPasswordInput.type = 'hidden';
-        confirmPasswordInput.name = 'confirmPassword';
-        confirmPasswordInput.value = confirmPassword;
-        
-        form.appendChild(emailInput);
-        form.appendChild(passwordInput);
-        form.appendChild(confirmPasswordInput);
-        document.body.appendChild(form);
-        form.submit();
-    }, 1500);
+        window.location.href = '/dashboard';
+    }, 1000);
 }
 
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
+// Initialize form handling
+document.addEventListener('DOMContentLoaded', function() {
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', handleSignup);
+    }
+});
 </script>
 {% endblock %}
