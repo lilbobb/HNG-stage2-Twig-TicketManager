@@ -24,35 +24,35 @@ try {
     switch ($path) {
         case '/':
             echo $twig->render('pages/landing.twig', [
-                'app_name' => 'TicketFlow',
+                'app_name' => 'FLix',
                 'current_route' => 'home'
             ]);
             break;
             
         case '/login':
             echo $twig->render('pages/login.twig', [
-                'app_name' => 'TicketFlow',
+                'app_name' => 'FLix',
                 'current_route' => 'login'
             ]);
             break;
             
         case '/signup':
             echo $twig->render('pages/signup.twig', [
-                'app_name' => 'TicketFlow',
+                'app_name' => 'FLix',
                 'current_route' => 'signup'
             ]);
             break;
             
         case '/dashboard':
             echo $twig->render('pages/dashboard.twig', [
-                'app_name' => 'TicketFlow',
+                'app_name' => 'FLix',
                 'current_route' => 'dashboard'
             ]);
             break;
             
         case '/tickets':
             echo $twig->render('pages/tickets.twig', [
-                'app_name' => 'TicketFlow',
+                'app_name' => 'FLix',
                 'current_route' => 'tickets'
             ]);
             break;
@@ -60,7 +60,7 @@ try {
         default:
             http_response_code(404);
             echo $twig->render('pages/landing.twig', [
-                'app_name' => 'TicketFlow',
+                'app_name' => 'FLix',
                 'error' => 'Page not found'
             ]);
             break;
