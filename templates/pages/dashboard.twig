@@ -5,50 +5,50 @@
 {% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-900 p-6">
-    <div class="max-w-7xl mx-auto">
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-white">Dashboard</h1>
-            <p class="text-gray-400 mt-2">Welcome to your ticket management system</p>
+<div class="min-h-screen bg-gray-900">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+        <div class="mb-6 sm:mb-8">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-1 sm:mb-2">Dashboard</h1>
+            <p class="text-gray-400 text-sm sm:text-base">Welcome to your ticket management system</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div class="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-400 text-sm">Total Tickets</p>
-                        <p class="text-2xl font-bold text-white mt-1" id="totalTickets">0</p>
+                        <p class="text-xl sm:text-2xl font-bold text-white mt-1" id="totalTickets">0</p>
                     </div>
-                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+            <div class="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-400 text-sm">Open Tickets</p>
-                        <p class="text-2xl font-bold text-white mt-1" id="openTickets">0</p>
+                        <p class="text-xl sm:text-2xl font-bold text-white mt-1" id="openTickets">0</p>
                     </div>
-                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+            <div class="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-400 text-sm">In Progress</p>
-                        <p class="text-2xl font-bold text-white mt-1" id="inProgressTickets">0</p>
+                        <p class="text-xl sm:text-2xl font-bold text-white mt-1" id="inProgressTickets">0</p>
                     </div>
-                    <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
@@ -56,26 +56,26 @@
             </div>
         </div>
 
-        <div class="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700 mb-6 sm:mb-8">
+        <div class="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700 mb-4 sm:mb-6">
             <h2 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Quick Actions</h2>
             <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <a href="/tickets" class="bg-blue-500 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-lg font-medium hover:bg-blue-600 transition text-sm sm:text-base text-center">
-            View All Tickets
+                <a href="/tickets" class="bg-blue-500 text-white px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-lg font-medium hover:bg-blue-600 transition text-sm sm:text-base text-center">
+                    View All Tickets
                 </a>
-                <button onclick="toggleTicketForm()" class="bg-green-500 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-lg font-medium hover:bg-green-600 transition text-sm sm:text-base text-center">
-            Create New Ticket
+                <button onclick="toggleTicketForm()" class="bg-green-500 text-white px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-lg font-medium hover:bg-green-600 transition text-sm sm:text-base text-center">
+                    Create New Ticket
                 </button>
-                <button onclick="loadTickets()" class="bg-gray-700 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-lg font-medium hover:bg-gray-600 transition text-sm sm:text-base text-center">
-            Refresh Stats
+                <button onclick="loadTickets()" class="bg-gray-700 text-white px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-lg font-medium hover:bg-gray-600 transition text-sm sm:text-base text-center">
+                    Refresh Stats
                 </button>
             </div>
         </div>
 
-        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h2 class="text-xl font-bold text-white mb-4">Recent Tickets</h2>
-            <div id="recentTickets" class="space-y-4">
-                <div class="text-center py-8 text-gray-500">
-                    <p>No tickets found. <a href="/tickets" class="text-blue-400 hover:text-blue-300">Create your first ticket</a></p>
+        <div class="bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700">
+            <h2 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Recent Tickets</h2>
+            <div id="recentTickets" class="space-y-3 sm:space-y-4">
+                <div class="text-center py-6 sm:py-8 text-gray-500">
+                    <p class="text-sm sm:text-base">No tickets found. <a href="/tickets" class="text-blue-400 hover:text-blue-300">Create your first ticket</a></p>
                 </div>
             </div>
         </div>
@@ -134,7 +134,6 @@ function showToast(message, type = 'success') {
         toastIcon.innerHTML = icons[type] || icons.success;
         toast.classList.remove('hidden');
         setTimeout(() => toast.classList.add('hidden'), 4000);
-    } else {
     }
 }
 
@@ -145,7 +144,6 @@ function loadTickets() {
     const allTickets = JSON.parse(localStorage.getItem("ticketapp_tickets") || "{}");
     const userTickets = allTickets[user.id] || [];
     
-    
     updateStats(userTickets);
     displayRecentTickets(userTickets);
 }
@@ -154,12 +152,10 @@ function updateStats(tickets) {
     const totalTickets = tickets.length;
     const openTickets = tickets.filter(t => t.status === 'open').length;
     const inProgressTickets = tickets.filter(t => t.status === 'in_progress').length;
-    const closedTickets = tickets.filter(t => t.status === 'closed').length;
     
     document.getElementById('totalTickets').textContent = totalTickets;
     document.getElementById('openTickets').textContent = openTickets;
     document.getElementById('inProgressTickets').textContent = inProgressTickets;
-    
 }
 
 function displayRecentTickets(tickets) {
@@ -170,30 +166,30 @@ function displayRecentTickets(tickets) {
 
     if (recentTickets.length === 0) {
         container.innerHTML = `
-            <div class="text-center py-8 text-gray-500">
-                <p>No tickets found. <a href="/tickets" class="text-blue-400 hover:text-blue-300">Create your first ticket</a></p>
+            <div class="text-center py-6 sm:py-8 text-gray-500">
+                <p class="text-sm sm:text-base">No tickets found. <a href="/tickets" class="text-blue-400 hover:text-blue-300">Create your first ticket</a></p>
             </div>
         `;
         return;
     }
 
     container.innerHTML = recentTickets.map(ticket => `
-        <div class="bg-gray-700 rounded-lg p-4 border border-gray-600 hover:border-gray-500 transition">
-            <div class="flex justify-between items-start">
-                <div class="flex-1">
-                    <h3 class="font-semibold text-white">${escapeHtml(ticket.title)}</h3>
-                    ${ticket.description ? `<p class="text-gray-400 text-sm mt-1 line-clamp-2">${escapeHtml(ticket.description)}</p>` : ''}
+        <div class="bg-gray-700 rounded-lg p-3 sm:p-4 border border-gray-600 hover:border-gray-500 transition">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:gap-4">
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-white text-sm sm:text-base truncate">${escapeHtml(ticket.title)}</h3>
+                    ${ticket.description ? `<p class="text-gray-400 text-xs sm:text-sm mt-1 line-clamp-2">${escapeHtml(ticket.description)}</p>` : ''}
                 </div>
-                <div class="flex gap-2 ml-4">
-                    <span class="px-2 py-1 rounded text-xs font-medium ${getStatusColor(ticket.status)}">
+                <div class="flex gap-2 justify-start sm:justify-end">
+                    <span class="px-2 py-1 rounded text-xs font-medium ${getStatusColor(ticket.status)} whitespace-nowrap">
                         ${ticket.status.replace('_', ' ')}
                     </span>
-                    ${ticket.priority ? `<span class="px-2 py-1 rounded text-xs font-medium ${getPriorityColor(ticket.priority)}">${ticket.priority}</span>` : ''}
+                    ${ticket.priority ? `<span class="px-2 py-1 rounded text-xs font-medium ${getPriorityColor(ticket.priority)} whitespace-nowrap">${ticket.priority}</span>` : ''}
                 </div>
             </div>
-            <div class="flex justify-between items-center mt-3 text-xs text-gray-500">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-2 sm:mt-3 text-xs text-gray-500 gap-1 sm:gap-0">
                 <span>Created: ${formatDate(ticket.createdAt)}</span>
-                <span class="px-2 py-1 bg-gray-600 text-gray-300 rounded">${ticket.id.substring(0, 8)}...</span>
+                <span class="px-2 py-1 bg-gray-600 text-gray-300 rounded text-xs">${ticket.id.substring(0, 8)}...</span>
             </div>
         </div>
     `).join('');
@@ -242,8 +238,6 @@ function toggleTicketForm() {
 
 document.addEventListener('DOMContentLoaded', function() {
     if (!requireAuth()) return;
-    
-    
     loadTickets();
 });
 
