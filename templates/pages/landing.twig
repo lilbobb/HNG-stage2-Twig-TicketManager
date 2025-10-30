@@ -15,13 +15,20 @@
                 Streamline your workflow with our powerful ticket management system. Track, organize, and resolve issues faster than ever.
             </p>
             <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
-                <a href="/signup" class="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-3 bg-white text-gray-900 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-100 transition shadow-lg text-center">
-                    Get Started
-                </a>
-                <a href="/login" class="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-3 bg-transparent text-white rounded-lg font-semibold text-base sm:text-lg hover:bg-white/10 transition border-2 border-white text-center">
-                    Login
-                </a>
-            </div>
+    <div id="guest-buttons" class="contents">
+        <a href="/signup" class="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-3 bg-white text-gray-900 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-100 transition shadow-lg text-center">
+            Get Started
+        </a>
+        <a href="/login" class="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-3 bg-transparent text-white rounded-lg font-semibold text-base sm:text-lg hover:bg-white/10 transition border-2 border-white text-center">
+            Login
+        </a>
+    </div>
+    <div id="logged-in-buttons" class="contents hidden">
+        <a href="/dashboard" class="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-3 bg-white text-gray-900 rounded-lg font-semibold text-base sm:text-lg hover:bg-gray-100 transition shadow-lg text-center">
+            Go to Dashboard
+        </a>
+    </div>
+</div>
         </div>
     </div>
 
@@ -58,3 +65,23 @@
     </div>
 </div>
 {% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const session = localStorage.getItem('ticketapp_session');
+    
+    if (session) {
+        try {
+            const sessionData = JSON.parse(session);
+            if (sessionData.expiresAt && sessionData.expiresAt > Date.now()) {
+                document.getElementById('guest-buttons')?.classList.add('hidden');
+                document.getElementById('logged-in-buttons')?.classList.remove('hidden');
+            }
+        } catch (e) {
+            console.error('Invalid session data');
+        }
+    }
+});
+</script>
+{% endblock %}
+

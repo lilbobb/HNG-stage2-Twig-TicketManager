@@ -1,4 +1,14 @@
 <?php
+session_start(); 
+
+$user = $_SESSION['user'] ?? null;
+
+$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+if ($user && $requestPath === '/login') {
+    header('Location: /dashboard');
+    exit;
+}
+
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -25,35 +35,40 @@ try {
         case '/':
             echo $twig->render('pages/landing.twig', [
                 'app_name' => 'FLix',
-                'current_route' => 'home'
+                'current_route' => 'home',
+                'user' => $user,
             ]);
             break;
             
         case '/login':
             echo $twig->render('pages/login.twig', [
                 'app_name' => 'FLix',
-                'current_route' => 'login'
+                'current_route' => 'login',
+                'user' => $user,
             ]);
             break;
             
         case '/signup':
             echo $twig->render('pages/signup.twig', [
                 'app_name' => 'FLix',
-                'current_route' => 'signup'
+                'current_route' => 'signup',
+                'user' => $user,
             ]);
             break;
             
         case '/dashboard':
             echo $twig->render('pages/dashboard.twig', [
                 'app_name' => 'FLix',
-                'current_route' => 'dashboard'
+                'current_route' => 'dashboard',
+                'user' => $user,
             ]);
             break;
             
         case '/tickets':
             echo $twig->render('pages/tickets.twig', [
                 'app_name' => 'FLix',
-                'current_route' => 'tickets'
+                'current_route' => 'tickets',
+                'user' => $user,
             ]);
             break;
             
@@ -61,6 +76,7 @@ try {
             http_response_code(404);
             echo $twig->render('pages/landing.twig', [
                 'app_name' => 'FLix',
+                'user' => $user,
                 'error' => 'Page not found'
             ]);
             break;

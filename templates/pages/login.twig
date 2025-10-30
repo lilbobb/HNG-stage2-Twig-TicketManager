@@ -1,5 +1,9 @@
 {% extends 'base.twig' %}
 
+{% block navigation %}
+    {% include 'components/navigation.twig' with {'user': user, 'app_name': app_name} %}
+{% endblock %}
+
 {% block content %}
 <div class="min-h-screen bg-black flex items-center justify-center p-4">
     <div class="w-full max-w-md">
@@ -78,6 +82,21 @@
 
 {% block extra_js %}
 <script>
+(function() {
+    const session = localStorage.getItem('ticketapp_session');
+    
+    if (session) {
+        try {
+            const sessionData = JSON.parse(session);
+            if (sessionData.expiresAt && sessionData.expiresAt > Date.now()) {
+                window.location.href = '/dashboard';
+                return;
+            }
+        } catch (e) {
+            localStorage.removeItem('ticketapp_session');
+        }
+    }
+})();
 const MOCK_USERS = [
     { id: 1, email: 'test@example.com', password: 'password123' },
     { id: 2, email: 'demo@example.com', password: 'demo123' },
@@ -164,5 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('password').value = 'password123';
     }
 });
+
 </script>
 {% endblock %}

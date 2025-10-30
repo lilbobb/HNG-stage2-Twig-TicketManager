@@ -83,7 +83,6 @@
     </div>
 </div>
 
-<!-- Add toast component directly in the template -->
 <div id="toast" class="hidden fixed top-4 right-4 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 max-w-sm z-50">
     <div class="flex items-center space-x-3">
         <div id="toast-icon"></div>
@@ -95,14 +94,27 @@
 
 {% block extra_js %}
 <script>
-// Mock user database
+(function() {
+    const session = localStorage.getItem('ticketapp_session');
+    
+    if (session) {
+        try {
+            const sessionData = JSON.parse(session);
+            if (sessionData.expiresAt && sessionData.expiresAt > Date.now()) {
+                window.location.href = '/dashboard';
+                return;
+            }
+        } catch (e) {
+            localStorage.removeItem('ticketapp_session');
+        }
+    }
+})();
 const MOCK_USERS = [
     { id: 1, email: 'test@example.com', password: 'password123' },
     { id: 2, email: 'demo@example.com', password: 'demo123' },
     { id: 3, email: 'admin@ticketflow.com', password: 'admin123' }
 ];
 
-// Simple toast function
 function showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toast-message');
@@ -123,18 +135,15 @@ function showToast(message, type = 'success') {
         }, 4000);
     } else {
         console.log(`${type}: ${message}`);
-        // Fallback alert
         alert(`${type.toUpperCase()}: ${message}`);
     }
 }
 
-// Email validation
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-// Handle signup
 function handleSignup(e) {
     e.preventDefault();
     
@@ -142,7 +151,6 @@ function handleSignup(e) {
     const password = document.getElementById('password')?.value;
     const confirmPassword = document.getElementById('confirmPassword')?.value;
 
-    // Validate
     if (!email || !password || !confirmPassword) {
         showToast('Please fill in all fields', 'error');
         return;
@@ -163,7 +171,6 @@ function handleSignup(e) {
         return;
     }
 
-    // Check if user already exists
     const registeredUsers = JSON.parse(localStorage.getItem('ticketapp_users') || '[]');
     const mockUserExists = MOCK_USERS.some(u => u.email === email);
     const registeredUserExists = registeredUsers.some(u => u.email === email);
@@ -173,7 +180,6 @@ function handleSignup(e) {
         return;
     }
 
-    // Create new user
     const newUser = {
         id: `user_${Date.now()}`,
         email: email,
@@ -181,27 +187,23 @@ function handleSignup(e) {
         createdAt: new Date().toISOString()
     };
 
-    // Store user
     registeredUsers.push(newUser);
     localStorage.setItem('ticketapp_users', JSON.stringify(registeredUsers));
 
-    // Create session
     const session = {
         userId: newUser.id,
         email: newUser.email,
-        expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+        expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) 
     };
 
     localStorage.setItem('ticketapp_session', JSON.stringify(session));
     showToast('Account created successfully!', 'success');
     
-    // Redirect to dashboard
     setTimeout(() => {
         window.location.href = '/dashboard';
     }, 1000);
 }
 
-// Initialize form handling
 document.addEventListener('DOMContentLoaded', function() {
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
